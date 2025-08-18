@@ -30,8 +30,11 @@ yarn-debug.log*
 yarn-error.log*
 
 # env files (can opt-in for commiting if needed)
-.env
-.env.test
+.env*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # vercel
 .vercel
@@ -39,5 +42,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# IDEs
 .vscode
+.cursor
 *storybook.log
+
+# Supabase
+.branches
+.temp
+.seed

@@ -19,8 +19,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'NSS Boilerplate',
-  description: 'A simple boilerplate for Next.js, Supabase and Shadcn/UI',
+  title: 'Communauto V2',
+  description: 'Application Communauto V2 - Plateforme de gestion de véhicules partagés',
 };
 
 export default async function RootLayout({

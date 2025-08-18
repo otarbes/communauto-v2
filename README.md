@@ -1,270 +1,161 @@
-# NSS Boilerplate
+# Communauto CC
 
-A modern full-stack boilerplate featuring Next.js 15, Supabase, Shadcn/UI, and more. Built with TypeScript and includes authentication, dark mode, internationalization, and a todo list demo.
+Application Next.js 15 pour l'analyse et l'optimisation des coûts de co-voiturage Communauto.
 
-## Table of Contents
+## 🎯 Mission
 
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Getting Started](#getting-started)
-- [Project Structure](#project-structure)
-- [Available Scripts](#available-scripts)
-- [Authentication](#authentication)
-- [Internationalization](#internationalization)
-- [Customization](#customization)
-- [Testing](#testing)
-- [Good Practices](#good-practices)
-- [Contributing](#contributing)
-- [License](#license)
+Refactoring ultra clean de `communauto-nss` vers `communauto-cc` avec architecture moderne et standards élevés.
 
-## Features
+## 🏗️ Architecture
 
-- 🚀 [Next.js 15](https://nextjs.org/) with App Router
-- 🎨 [Shadcn/UI](https://ui.shadcn.com/) components
-- 📚 [Storybook](https://storybook.js.org/) for component development
-- 🔐 [Supabase](https://supabase.com/) Authentication & Database
-- 🌍 Internationalization with [next-intl](https://next-intl-docs.vercel.app/)
-- 🎭 Dark mode with [next-themes](https://github.com/pacocoursey/next-themes)
-- 📝 Form handling with [react-hook-form](https://react-hook-form.com/) and [zod](https://github.com/colinhacks/zod)
-- 🔄 Data fetching with [TanStack Query](https://tanstack.com/query)
-- 🎯 [TypeScript](https://www.typescriptlang.org/) support
-- 💅 [Tailwind CSS](https://tailwindcss.com/) for styling
-- 🧪 Testing setup with [Vitest](https://vitest.dev/) and [Cypress](https://www.cypress.io/)
-- 📦 [Lucide Icons](https://lucide.dev/)
+### Stack Technique
+- **Frontend**: Next.js 15 (App Router) + TypeScript + Tailwind CSS
+- **Backend**: Supabase (PostgreSQL + Auth + Storage + Edge Functions)
+- **UI**: Shadcn/ui components
+- **State**: TanStack Query + React Context
+- **Forms**: React Hook Form + Zod validation
 
-## Prerequisites
+### Structure du Projet
+```
+src/
+├── app/                    # Next.js App Router pages
+├── components/
+│   ├── ui/                 # Shadcn/ui components (design system)
+│   ├── features/           # Components métier par domaine
+│   │   ├── auth/           # Authentification
+│   │   ├── pdf-extraction/ # Extraction PDF
+│   │   └── dashboard/      # Tableau de bord
+│   └── layout/             # Components layout globaux
+├── lib/                    # Services et logique métier
+│   ├── auth/               # Services authentification
+│   ├── pdf-extraction/     # Services extraction PDF
+│   ├── supabase/           # Clients Supabase
+│   └── shared/             # Utilitaires partagés
+├── hooks/                  # Hooks globaux réutilisables
+├── types/                  # Types TypeScript par domaine
+└── middleware.ts           # Middleware Next.js
+```
 
-- Node.js 20+
-- Docker (for local Supabase)
+## 🚀 Phase 1 - Foundation ✅
+
+### Composants Core Implémentés
+1. **Gestion utilisateurs** ✅
+   - Authentification Supabase
+   - RLS policies granulaires
+   - Profils utilisateurs
+
+2. **Base de données** ✅
+   - Schéma Communauto complet (7 tables)
+   - Relations et index optimisés
+   - Migrations versionnées
+
+3. **Architecture Clean** ✅
+   - Structure par domaine métier
+   - Types TypeScript stricts
+   - Standards de code respectés
+
+### Tables Principales
+- `user_profiles`: Profils utilisateurs étendus
+- `file_uploads`: Fichiers PDF uploadés
+- `trips`: Trajets extraits des factures
+- `transactions`: Transactions financières
+- `balance_summary`: Résumés de facturation
+- `subscriber_groups`: Groupes d'abonnés (principal + co-abonnés)
+
+## 🛠️ Développement
+
+### Prérequis
+- Node.js 18+
+- Docker (pour Supabase local)
 - Git
 
-## Getting Started
-
-1. Clone the repository:
-
+### Installation
 ```bash
-git clone https://github.com/pierrecabriere/nss-boilerplate.git my-project
-cd my-project
-```
+# Cloner le projet
+git clone https://github.com/username/communauto-cc.git
+cd communauto-cc
 
-**You can also rename all the references to this boilerplate in the project.**
-
-- in `package.json`
-- in `supabase/config.toml`
-- in `src/app/layout.tsx`
-
-2. Install dependencies:
-
-```bash
+# Installer les dépendances
 npm install
-```
 
-3. Start local Supabase:
+# Démarrer Supabase local
+supabase start
 
-```bash
-npx supabase start
-```
+# Appliquer les migrations
+supabase db push --local
 
-This will start a local Supabase instance using Docker. Make note of the `anon key` and `API URL` that are displayed.
+# Générer les types TypeScript
+npm run gen:types
 
-4. Push database migrations:
-
-```bash
-npx supabase db push --local
-```
-
-This will create the initial database structure, including the todos table.
-
-5. Set environment variables:
-
-```bash
-cp .env.example .env
-```
-
-Update the `.env` file with your Supabase credentials:
-
-- `SUPABASE_URL`: Usually `http://127.0.0.1:54321`
-- `SUPABASE_ANON_KEY`: The anon key from step 3
-- `SUPABASE_BASE_KEY`: Same as your anon key for local development
-
-6. Create a first user:
-
-- Open Supabase Studio at `http://127.0.0.1:54323`
-- Go to Authentication > Users
-- Create a new user with email/password
-- Ensure the user has the `authenticated` role
-
-7. Start the development server:
-
-```bash
+# Démarrer le serveur de développement
 npm run dev
 ```
 
-Visit `http://localhost:3000` to see your application.
-
-## Project Structure
-
-```
-src/
-├── app/                # Next.js app router pages
-│   ├── auth/           # Authentication pages
-│   └── ...             # Other pages
-├── components/         # React components
-│   ├── ui/             # Shadcn/UI components
-│   └── ...             # Custom components
-├── hooks/              # Custom React hooks
-├── lib/                # Utility functions and configurations
-│   ├── api/            # API related functions
-│   └── supabase/       # Supabase client configurations
-├── types/              # TypeScript type definitions
-└── i18n/               # Internationalization
-    └── messages/       # Internationalization messages
-├── stories/            # Storybook stories
-│   ├── components/     # Component stories
-│   └── pages/          # Page stories
-supabase/
-└── functions/          # Supabase Edge Functions (Deno)
-```
-
-## IDE Configuration
-
-### VS Code
-
-If you're using VS Code, you can limit Deno's type checking to only the Supabase functions directory by adding this to your `.vscode/settings.json`:
-
-```json
-{
-  "deno.enablePaths": ["supabase/functions"]
-}
-```
-
-This ensures that Deno only runs in the Supabase Edge Functions directory and doesn't interfere with the rest of your TypeScript setup.
-
-## Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run test` - Run Vitest tests
-- `npm run cypress:open` - Open Cypress test runner
-- `npm run cypress:run` - Run Cypress tests headlessly
-- `npm run gen:types` - Generate TypeScript types from Supabase schema
-- `npm run storybook` - Start Storybook development server
-- `npm run build-storybook` - Build Storybook for production
-
-## Authentication
-
-The boilerplate includes a complete authentication system using Supabase Auth:
-
-- Email/Password authentication
-- Protected routes using middleware
-- User context and hooks
-- Login/Logout functionality
-
-## Internationalization
-
-Supports multiple languages out of the box:
-
-- English and French included by default
-- Easy to add more languages in `src/i18n/messages/` directory and in the `SUPPORTED_LANGUAGES` array in `src/components/settings-modal.tsx`
-- Language switching with persistent selection in cookie
-
-## Customization
-
-### Theme
-
-- Modify the theme in `src/app/globals.css`
-- Dark mode support using `next-themes`
-- Customizable Shadcn/UI components in `src/components/ui`
-
-Shadcn/UI offers a tool to customize your theme. You can find it at `https://ui.shadcn.com/themes`. Then, you can replace the generated theme in `src/app/globals.css` with your custom theme. Be careful to replace only the `@layer base { ... }` block.
-
-### Database Schema
-
-- Generate updated types with `npm run gen:types`
-
-## Testing
-
-- Unit testing with Vitest
-- E2E testing with Cypress
-- Example tests included
-
-To run the tests:
-
+### Scripts Utiles
 ```bash
-npm run test
-npm run cypress:open
+# Développement
+npm run dev                 # Serveur de développement
+supabase start             # Démarrer Supabase local
+
+# Code Quality
+npm run lint               # ESLint + TypeScript check
+npm run typecheck          # TypeScript uniquement
+
+# Base de données
+npm run gen:types          # Générer types depuis schéma DB
+supabase db push --local   # Appliquer migrations
+supabase db reset          # Reset DB avec migrations
+
+# Tests
+npm run test               # Tests unitaires (Vitest)
+npm run test:e2e           # Tests E2E (Cypress)
 ```
 
-## Storybook
+### URLs Locales
+- **Application**: http://localhost:3000
+- **Supabase Studio**: http://localhost:54323
+- **API Supabase**: http://localhost:54321
 
-The project includes Storybook for component development and documentation:
+## 📊 Phase 2 - Core Features (À venir)
 
-### Structure
+### Objectifs
+1. **Service d'extraction PDF** (Edge Functions)
+2. **Composants d'upload** et validation
+3. **Services de persistance** données
+4. **Migration calculateurs** de coûts depuis communauto-nss
 
-- Stories are located in `src/stories/`
-- Component stories in `src/stories/components/`
-- Page stories in `src/stories/pages/`
+## 🔒 Sécurité
 
-### Running Storybook
+- Row Level Security (RLS) activé sur toutes les tables
+- Policies granulaires par utilisateur
+- Authentification Supabase avec JWT
+- Variables d'environnement sécurisées
 
-```bash
-npm run storybook
-```
+## 📝 Standards de Code
 
-Visit `http://localhost:6006` to see your component stories.
+### Conventions
+- **Fichiers**: kebab-case (`user-profile.tsx`)
+- **Components**: PascalCase (`UserProfile`)
+- **Types**: PascalCase avec suffixes (`UserData`, `AuthError`)
+- **Fonctions**: camelCase avec prefixes (`handleSubmit`, `validateUser`)
 
-### Writing Stories
+### Architecture Obligatoire
+- ❌ **INTERDIT**: `lib/utils.ts` générique
+- ❌ **INTERDIT**: Logique métier dans `app/`
+- ✅ **OBLIGATOIRE**: Organisation par domaine métier
+- ✅ **OBLIGATOIRE**: Types dans `src/types/`
 
-Create new stories in the `src/stories` directory following the pattern:
+## 🤝 Contribution
 
-```typescript
-// Example: src/stories/components/button.stories.tsx
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from '@/components/ui/button';
+1. Respecter les règles définies dans `CLAUDE.md`
+2. Valider avec `npm run lint` avant commit
+3. Suivre les conventions de nommage
+4. Documenter les changements significatifs
 
-const meta: Meta<typeof Button> = {
-  component: Button,
-  // ... configuration
-};
+## 📄 Licence
 
-export default meta;
-type Story = StoryObj<typeof Button>;
+MIT - Voir [LICENSE](LICENSE)
 
-export const Primary: Story = {
-  args: {
-    variant: 'default',
-    children: 'Button',
-  },
-};
-```
+---
 
-### Building Storybook
-
-To build a static version of Storybook:
-
-```bash
-npm run build-storybook
-```
-
-The output will be in the `storybook-static` directory.
-
-## Good Practices
-
-- Use kebab-case for all file names (e.g., `my-component.tsx`, `use-auth.ts`)
-- Remove unused boilerplate files (e.g., `lib/api/todos`) when starting a new project
-- Create Supabase migrations whenever you make database changes:
-  ```bash
-  npx supabase db pull
-  ```
-  Then commit these migrations with your changes
-- Don't use `process.env` directly in your code. Instead, use the environment variables defined in `src/lib/env.ts`
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+**Développé avec ❤️ et les standards les plus élevés pour Communauto**

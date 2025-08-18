@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/shared/utils';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import MainSidebar from './main-sidebar';
