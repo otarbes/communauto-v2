@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import type { CommunautoInvoiceData } from '@/lib/pdf-extraction/parser';
+import type { CommunautoInvoiceData } from '@/types/pdf';
 
 interface ExtractionResultsProps {
   data: CommunautoInvoiceData;
@@ -26,7 +26,7 @@ export function ExtractionResults({ data, fileName }: ExtractionResultsProps) {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-600">
-                {data.accountNumber}
+                {data.account_number}
               </div>
               <div className="text-sm text-muted-foreground">
                 N° de compte
@@ -50,7 +50,7 @@ export function ExtractionResults({ data, fileName }: ExtractionResultsProps) {
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-purple-600">
-                {data.summary.totalAmount.toFixed(2)} $
+                {parseFloat(data.total_amount.replace(',', '.')).toFixed(2)} $
               </div>
               <div className="text-sm text-muted-foreground">
                 Montant total
@@ -67,16 +67,15 @@ export function ExtractionResults({ data, fileName }: ExtractionResultsProps) {
         <CardContent>
           <div className="flex items-center justify-between">
             <div>
-              <div className="font-semibold">Début</div>
+              <div className="font-semibold">Période de facturation</div>
               <div className="text-muted-foreground">
-                {new Date(data.billingPeriod.start).toLocaleDateString('fr-FR')}
+                {data.billing_period}
               </div>
             </div>
-            <div className="text-muted-foreground">→</div>
-            <div>
-              <div className="font-semibold">Fin</div>
+            <div className="text-muted-foreground">
+              <div className="font-semibold">N° facture</div>
               <div className="text-muted-foreground">
-                {new Date(data.billingPeriod.end).toLocaleDateString('fr-FR')}
+                {data.invoice_number}
               </div>
             </div>
           </div>
@@ -94,14 +93,14 @@ export function ExtractionResults({ data, fileName }: ExtractionResultsProps) {
                 <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
                   <div>
                     <div className="font-medium">
-                      {trip.startLocation} → {trip.endLocation}
+                      Véhicule {trip.vehicle_number} - Usager {trip.user_number}
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      {new Date(trip.startDate).toLocaleDateString('fr-FR')} - {trip.distance}km
+                      {trip.start_datetime} - {trip.km}km - {trip.hours}h
                     </div>
                   </div>
                   <div className="font-semibold">
-                    {trip.cost.toFixed(2)} $
+                    {parseFloat(trip.total_due.replace(',', '.')).toFixed(2)} $
                   </div>
                 </div>
               ))}

@@ -1,53 +1,64 @@
 /**
  * Types liés à l'extraction PDF
+ * Compatible avec communauto-nss
  */
 
 // Types pour les données extraites des factures Communauto
 export interface CommunautoInvoiceData {
-  accountNumber: string;
-  billingPeriod: {
-    start: string;
-    end: string;
-  };
+  filename: string;
+  account_number: string;
+  billing_period: string;
+  invoice_number: string;
+  current_plan: string;
+  plan_expiry: string;
+  total_amount: string;
+  balance: CommunautoBalance;
   trips: CommunautoTrip[];
   transactions: CommunautoTransaction[];
-  summary: {
-    totalAmount: number;
-    currency: string;
-  };
-  metadata: {
-    extractedAt: string;
-    fileName: string;
-    fileSize: number;
-  };
+}
+
+export interface CommunautoBalance {
+  previous_balance: string;
+  payments: string;
+  remaining_balance: string;
+  late_interest: string;
+  trips_total: string;
+  tps: string;
+  tvq: string;
+  purchase_credits: string;
+  other_transactions: string;
+  new_period_total: string;
+  new_balance: string;
 }
 
 export interface CommunautoTrip {
-  id: string;
-  startDate: string;
-  endDate: string;
-  startLocation: string;
-  endLocation: string;
-  distance: number; // en km
-  duration: number; // en minutes
-  vehicleType: string;
-  cost: number;
-  fees?: CommunautoTripFee[];
-}
-
-export interface CommunautoTripFee {
-  type: string;
+  vehicle_number: string;
+  user_number: string;
+  start_datetime: string;
+  end_datetime: string;
+  days: string;
+  hours: string;
+  time_price: string;
+  km: string;
+  km_price: string;
+  reservation_fee: string;
+  other_fee_credit: string;
   description: string;
-  amount: number;
+  total_due: string;
+  rate_applied: string;
+  purchase_credit: string;
+  note?: string;
 }
 
 export interface CommunautoTransaction {
-  id: string;
-  date: string;
+  user_number: string;
+  transaction_date: string;
   type: string;
   description: string;
-  amount: number;
-  category?: string;
+  cost: string;
+  tps: string;
+  tvq: string;
+  total: string;
 }
 
 // Types pour l'upload de fichiers

@@ -2,7 +2,7 @@
 
 ## 🎯 Mission Principale
 
-Créer un nouveau projet **communauto-cc** en partant du projet **communauto-nss** existant, en appliquant les plus hauts standards de code et d'architecture moderne.
+Bâtir ce nouveau projet **communauto-v2** en partant du projet **communauto-nss** existant, en appliquant les plus hauts standards de code et d'architecture moderne.
 
 ### Objectifs
 - **Refactoring complet** : Reconstruire le projet avec une architecture ultra clean
@@ -75,21 +75,20 @@ Ces règles sont définies par Communauto et ne peuvent PAS être modifiées :
 
 ### 🔧 Règles Application (ÉVOLUTIVES) 
 Ces règles sont définies par notre application et peuvent être améliorées :
-- **Onboarding obligatoire** : À la création de compte, forcer l'upload d'une première facture
-- **Validation compte** : Extraire le No d'abonné de la première facture pour valider l'identité
+- **Onboarding obligatoire** : Une fois son compte créé, forcer l'upload d'une première facture
+- **Validation compte** : Extraire le No d'abonné de la première facture afin de l'associer au user
 - **Workflow utilisateur** : Processus d'inscription, validation, utilisation
-- **Interface utilisateur** : UX/UI, navigation, fonctionnalités
 
 ### Gestion Utilisateurs
 - **Compte unique** : Un seul compte utilisateur pour l'abonné principal
-- **Co-abonnés intégrés** : Les données des co-abonnés sont incluses dans le compte principal
+- **Co-abonnés intégrés** : Les données des co-abonnés sont incluses dans le compte utilisateur de l'abonné principal
 - **Structure facture** : Le header contient toujours le "No de compte" de l'abonné principal
 - **Trajets mixtes** : Les trajets peuvent avoir différents "No d'usagers" (principal + co-abonnés)
 - **Sécurité** : RLS policies basées sur l'abonné principal qui possède toutes les données
 
 ### Extraction PDF
-- **Format Communauto strict** : Respecter exactement le parsing existant
-- **Données structurées** : Voyages, transactions, métadonnées compte
+- **Format Communauto strict** : Respecter exactement le parsing existant dans communauto-nss
+- **Données structurées** : Respecter exactement la strcuture existant dans communauto-nss
 - **Validation** : Vérifier l'intégrité des données extraites
 - **Historique** : Conserver trace de tous les imports
 
